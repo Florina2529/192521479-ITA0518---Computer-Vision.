@@ -1,0 +1,40 @@
+import cv2
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# Upload image
+uploaded = files.upload()
+
+# Get uploaded file name
+image_path = list(uploaded.keys())[0]
+
+# Read the image
+img = cv2.imread(image_path)
+
+# Check if image is loaded
+if img is None:
+    print("Error: Image not found!")
+else:
+    # Rotate 90 degrees clockwise
+    clockwise = cv2.rotate(img, cv2.ROTATE_90_CLOCKWISE)
+
+    # Rotate 90 degrees counterclockwise
+    counterclockwise = cv2.rotate(img, cv2.ROTATE_90_COUNTERCLOCKWISE)
+
+    # Display images
+    print("Original Image")
+    cv2_imshow(img)
+
+    print("Clockwise Rotated Image")
+    cv2_imshow(clockwise)
+
+    print("Counterclockwise Rotated Image")
+    cv2_imshow(counterclockwise)
+
+    # Save images
+    cv2.imwrite("Clockwise_Rotated.jpg", clockwise)
+    cv2.imwrite("Counterclockwise_Rotated.jpg", counterclockwise)
+
+    # Download images
+    files.download("Clockwise_Rotated.jpg")
+    files.download("Counterclockwise_Rotated.jpg")
