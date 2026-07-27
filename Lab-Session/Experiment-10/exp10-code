@@ -1,0 +1,42 @@
+import cv2
+import numpy as np
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# Upload image
+uploaded = files.upload()
+
+# Read uploaded image
+image_path = list(uploaded.keys())[0]
+image = cv2.imread(image_path)
+
+# Check if image is loaded
+if image is None:
+    print("Error: Image not found!")
+else:
+    # Get image dimensions
+    rows, cols = image.shape[:2]
+
+    # Move the image
+    tx = 100   # Move right by 100 pixels
+    ty = 100   # Move down by 100 pixels
+
+    # Translation matrix
+    M = np.float32([[1, 0, tx],
+                    [0, 1, ty]])
+
+    # Apply translation
+    moved_image = cv2.warpAffine(image, M, (cols, rows))
+
+    # Display images
+    print("Original Image")
+    cv2_imshow(image)
+
+    print("Moved Image")
+    cv2_imshow(moved_image)
+
+    # Save output
+    cv2.imwrite("Moved_Image.jpg", moved_image)
+
+    # Download output image
+    files.download("Moved_Image.jpg")
