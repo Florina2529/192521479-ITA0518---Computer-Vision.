@@ -1,0 +1,33 @@
+import cv2
+
+# Capture video from webcam
+cap = cv2.VideoCapture(0)
+
+if not cap.isOpened():
+    print("Error: Cannot open webcam.")
+    exit()
+
+print("Press 'q' to quit.")
+
+while True:
+    ret, frame = cap.read()
+
+    if not ret:
+        break
+
+    # Normal video
+    cv2.imshow("Normal Video", frame)
+
+    # Slow Motion (wait longer)
+    cv2.imshow("Slow Motion", frame)
+    cv2.waitKey(80)
+
+    # Fast Motion (almost no delay)
+    cv2.imshow("Fast Motion", frame)
+    key = cv2.waitKey(5)
+
+    if key & 0xFF == ord('q'):
+        break
+
+cap.release()
+cv2.destroyAllWindows()
