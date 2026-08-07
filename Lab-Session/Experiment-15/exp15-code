@@ -1,0 +1,45 @@
+import cv2
+import numpy as np
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# Upload image
+uploaded = files.upload()
+image_path = list(uploaded.keys())[0]
+
+# Read image
+img = cv2.imread(image_path)
+
+# Get image dimensions
+rows, cols = img.shape[:2]
+
+# Source points
+src_points = np.float32([
+    [0, 0],
+    [cols - 1, 0],
+    [0, rows - 1],
+    [cols - 1, rows - 1]
+])
+
+# Destination points
+dst_points = np.float32([
+    [50, 50],
+    [cols - 50, 20],
+    [20, rows - 50],
+    [cols - 80, rows - 20]
+])
+
+# Compute homography matrix using DLT method
+H, status = cv2.findHomography(src_points, dst_points, cv2.RANSAC)
+
+# Apply transformation
+dlt_img = cv2.warpPerspective(img, H, (cols, rows))
+
+# Display images
+cv2_imshow(img)
+cv2_imshow(dlt_img)
+
+# Save output image
+cv2.imwrite("DLT_Transformed_Image.jpg", dlt_img)
+
+print("Output saved as DLT_Transformed_Image.jpg")
