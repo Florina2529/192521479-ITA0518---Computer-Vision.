@@ -1,0 +1,40 @@
+from PIL import Image, ImageFilter
+from google.colab import files
+import matplotlib.pyplot as plt
+
+# Upload image
+uploaded = files.upload()
+
+# Get image name
+filename = list(uploaded.keys())[0]
+
+# Open image
+image = Image.open(filename)
+
+# Apply Unsharp Masking
+sharpened = image.filter(
+    ImageFilter.UnsharpMask(
+        radius=3,
+        percent=200,
+        threshold=5
+    )
+)
+
+# Display original image
+plt.figure(figsize=(6, 4))
+plt.imshow(image)
+plt.title("Original Image")
+plt.axis("off")
+plt.show()
+
+# Display sharpened image
+plt.figure(figsize=(6, 4))
+plt.imshow(sharpened)
+plt.title("Unsharp Masked Image")
+plt.axis("off")
+plt.show()
+
+# Save output
+sharpened.save("Unsharp_Masked_Image.jpg")
+
+print("Output saved as Unsharp_Masked_Image.jpg")
