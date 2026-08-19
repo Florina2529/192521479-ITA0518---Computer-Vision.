@@ -1,0 +1,37 @@
+import cv2
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# Upload image
+uploaded = files.upload()
+
+# Get image name
+filename = list(uploaded.keys())[0]
+
+# Read image in grayscale
+img = cv2.imread(filename, 0)
+
+# Sobel X-axis
+sobelx = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=3)
+
+# Sobel Y-axis
+sobely = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=3)
+
+# Combine X and Y edges
+edges = cv2.addWeighted(sobelx, 0.5, sobely, 0.5, 0)
+
+# Convert to 8-bit image
+edges = cv2.convertScaleAbs(edges)
+
+# Save output
+cv2.imwrite("Edge_detection.jpg", edges)
+
+# Display original image
+print("Original Image:")
+cv2_imshow(img)
+
+# Display output
+print("Sobel XY Edge Detection:")
+cv2_imshow(edges)
+
+print("Output saved as Edge_detection.jpg")
