@@ -1,0 +1,30 @@
+import cv2
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# Upload image
+uploaded = files.upload()
+
+# Get image name
+filename = list(uploaded.keys())[0]
+
+# Read image in grayscale
+img = cv2.imread(filename, 0)
+
+# Apply Sobel operator along Y-axis
+sobel_y = cv2.Sobel(img, cv2.CV_64F, 0, 1, ksize=5)
+
+# Convert to 8-bit image
+sobel_y = cv2.convertScaleAbs(sobel_y)
+
+# Save output
+cv2.imwrite("sobel_y.jpg", sobel_y)
+
+# Display result
+print("Original Image:")
+cv2_imshow(img)
+
+print("Sobel Y Edge Detection:")
+cv2_imshow(sobel_y)
+
+print("Output saved as sobel_y.jpg")
