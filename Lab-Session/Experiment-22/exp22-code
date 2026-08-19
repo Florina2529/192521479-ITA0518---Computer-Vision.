@@ -1,0 +1,42 @@
+import cv2
+import numpy as np
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# Upload image
+uploaded = files.upload()
+
+# Get image name
+filename = list(uploaded.keys())[0]
+
+# Read image
+image = cv2.imread(filename)
+
+# Resize image for easy viewing
+image = cv2.resize(image, (500, 400))
+
+# Laplacian mask
+kernel = np.array([
+    [0, 1, 0],
+    [1, -4, 1],
+    [0, 1, 0]
+])
+
+# Apply Laplacian filter
+laplacian = cv2.filter2D(image, -1, kernel)
+
+# Sharpen the image
+sharpened = cv2.subtract(image, laplacian)
+
+# Save output
+cv2.imwrite("Sharpened_Image.jpg", sharpened)
+
+# Display original image
+print("Original Image:")
+cv2_imshow(image)
+
+# Display sharpened image
+print("Sharpened Image:")
+cv2_imshow(sharpened)
+
+print("Output saved as Sharpened_Image.jpg")
