@@ -1,0 +1,28 @@
+import cv2
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# Upload image
+uploaded = files.upload()
+
+# Get image name
+filename = list(uploaded.keys())[0]
+
+# Read image in grayscale
+img = cv2.imread(filename, 0)
+
+# Apply Sobel X
+sobel_x = cv2.Sobel(img, cv2.CV_64F, 1, 0, ksize=5)
+
+# Convert to 8-bit image
+sobel_x = cv2.convertScaleAbs(sobel_x)
+
+# Save the output
+cv2.imwrite("sobel_x.jpg", sobel_x)
+
+# Display images
+print("Original Image:")
+cv2_imshow(img)
+
+print("Sobel X Edge Detection:")
+cv2_imshow(sobel_x)
