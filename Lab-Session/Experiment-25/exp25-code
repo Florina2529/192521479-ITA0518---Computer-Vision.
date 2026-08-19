@@ -1,0 +1,53 @@
+import cv2
+import numpy as np
+from google.colab import files
+from google.colab.patches import cv2_imshow
+
+# Upload image
+uploaded = files.upload()
+
+# Get image name
+filename = list(uploaded.keys())[0]
+
+# Read image
+image = cv2.imread(filename)
+
+# Convert image to grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Calculate gradient along X-axis
+gradient_x = cv2.Sobel(
+    gray,
+    cv2.CV_64F,
+    1,
+    0,
+    ksize=3
+)
+
+# Calculate gradient along Y-axis
+gradient_y = cv2.Sobel(
+    gray,
+    cv2.CV_64F,
+    0,
+    1,
+    ksize=3
+)
+
+# Calculate gradient
+gradient = cv2.subtract(gradient_x, gradient_y)
+
+# Convert to 8-bit image
+gradient = cv2.convertScaleAbs(gradient)
+
+# Save output
+cv2.imwrite("sharpened_image3.jpg", gradient)
+
+# Display original image
+print("Original Image:")
+cv2_imshow(image)
+
+# Display gradient masked image
+print("Gradient Masked Image:")
+cv2_imshow(gradient)
+
+print("Output saved as sharpened_image3.jpg")
